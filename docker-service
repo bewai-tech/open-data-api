@@ -1,0 +1,166 @@
+#!/bin/bash
+set -o nounset
+set -o errexit
+
+OPTIND=1
+env=''
+
+# Get cli options
+while getopts "he:" opt; do
+  case $opt in
+    h)
+        show_help
+        exit 0
+        ;;
+    e)
+        env=".$OPTARG"
+        ;;
+    *)
+        show_help >&2
+        exit 1
+        ;;
+  esac
+done
+
+# Shift off the options and optional --.
+shift "$((OPTIND-1))"
+
+if [ "$env" == '' ]; then
+  [ ! -f .env ] && cp .env.dist .env;
+else
+  [ ! -f .env ] && cp .env"$env" .env;
+fi
+
+[ ! -f .env ] && cp .env.sample .env;
+source .env
+
+# Common operations
+initialize() {
+    down
+    start
+}
+
+start() {
+    docker-compose -f docker-compose"$env".yml up -d --remove-orphans
+    sleep 1
+    docker-compose -f docker-compose"$env".yml ps
+}
+
+stop() {
+    docker-compose -f docker-compose"$env".yml stop
+    docker-compose -f docker-compose"$env".yml ps
+}
+
+down() {
+    docker-compose -f docker-compose"$env".yml down --remove-orphans
+}
+
+install() {
+    docker-compose -f docker-compose"$env".yml exec opendata-api bash -c "npm install"
+}
+
+initTables() {
+    docker-compose -f docker-compose"$env".yml exec opendata-api bash -c "npm run initTables"
+}
+
+importData() {
+    datasetName="$1"
+    docker-compose -f docker-compose"$env".yml exec opendata-api bash -c "npm run importData $datasetName"
+}
+
+downloadAssets() {
+    datasetName="$1"
+    docker-compose -f docker-compose"$env".yml exec opendata-api bash -c "npm run downloadAssets $datasetName"
+}
+
+serve() {
+    docker-compose -f docker-compose"$env".yml exec opendata-api bash -c "npm run start"
+}
+
+# Test
+tests() {
+    qualityTests
+    unitTests
+}
+
+unitTests() {
+    docker-compose -f docker-compose"$env".yml exec opendata-api bash -c "npm run test:unit:ci"
+}
+
+qualityTests() {
+    docker-compose -f docker-compose"$env".yml exec opendata-api bash -c "npm run lint"
+}
+
+# Usage info
+show_help() {
+cat << EOF
+Usage:  ${0##*/} [-e] [COMMAND]
+Options:
+  -e string        Specify env ("test"|"dev"|"demo"|"staging") (default "dev")
+
+Commands:
+  initialize                  Start the project no matter what state it is in
+  start                       Start docker containers
+  stop                        Stop NodeJS server
+  down                        Remove docker containers
+  install                     Run app installation scripts
+  initTables                  Run Postgres tables installation scripts
+  importData                  Run dataset import into a Postgres table
+  downloadAssets              Download the given data set from configured source
+  serve                       Serve NodeJS server for local dev
+  tests                       Run unit and quality tests
+  unitTests                   Run unit tests
+  qualityTests                Run quality tests
+EOF
+}
+
+# Show help if no argument was supplied
+if [ $# -eq 0 ]
+  then
+    show_help >&2
+    exit 1
+fi
+
+case "$1" in
+initialize)
+        initialize
+        ;;
+start)
+        start
+        ;;
+stop)
+        stop
+        ;;
+down)
+        down
+        ;;
+install)
+        install
+        ;;
+initTables)
+        initTables
+        ;;
+importData)
+        importData $2
+        ;;
+downloadAssets)
+        downloadAssets $2
+        ;;
+serve)
+        serve
+        ;;
+tests)
+        tests
+        ;;
+unitTests)
+        unitTests
+        ;;
+qualityTests)
+        qualityTests
+        ;;
+ *)
+        show_help >&2
+        exit 1
+esac
+
+exit 0

@@ -1,0 +1,15 @@
+{
+    "recommendations": [
+        "davidanson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
+        "editorconfig.editorconfig",
+        "esbenp.prettier-vscode",
+        "streetsidesoftware.code-spell-checker",
+        "tlent.jest-snapshot-language-support",
+        "wayou.vscode-todo-highlight",
+    ],
+    "unwantedRecommendations": [
+        "hookyqr.beautify",
+        "dbaeumer.jshint"
+    ]
+}

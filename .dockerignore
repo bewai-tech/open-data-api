@@ -1,0 +1,8 @@
+.git
+.gitlab
+.husky
+dist
+node_modules
+docker
+k8s
+src/tests

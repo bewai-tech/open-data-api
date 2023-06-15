@@ -1,0 +1,11 @@
+node_modules
+dist
+jest.unit.config.js
+coverage
+__snapshots__
+src/tests
+packages/eslint-plugin-tslint/tests
+.github
+.vscode
+postgresdata
+docker
