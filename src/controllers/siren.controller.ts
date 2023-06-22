@@ -4,25 +4,20 @@ import { db } from '../services';
 class SirenController {
 
     /**
-     * Dynamically checks SIREN or SIRET number depending on the parameter's length.
-     * SIREN string length is 9 (multiple occurences could be found).
-     * SIRET string length is 14 (unique occurence could be found).
-     * @returns the corresponding items
+     * Get all sirene paginated data or specific one with siret number
+     * @returns the corresponding item(s)
      */
     static checkSirene = async (req: Request, res: Response) => {
-        const { siren, siret } = req.query as Record<any, string>;
+        const { siret } = req.query as Record<any, string>;
         const limit = +req.query?.limit <= 100 ? +req.query?.limit : 100;
         const offset = +req.query?.offset || 0;
 
         let result;
         try {
-            if (!siren && !siret) {
+            if (!siret) {
                 result = await db.any(`SELECT * FROM sirene LIMIT ${limit} OFFSET ${offset}`);
             } else {
-                result = await db.any(
-                    `SELECT * FROM sirene WHERE ${!siren ? 'siret' : 'siren'} IN ($1:csv) LIMIT ${limit} OFFSET ${offset}`,
-                    [!siren ? siret.split(',') : siren.split(',')]
-                );
+                result = await db.one('SELECT * FROM sirene WHERE siret = $1', [siret]);
             }
         } catch (error) {
             res.status(404).send(error);
