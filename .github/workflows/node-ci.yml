@@ -1,0 +1,21 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: npm install, build, lint and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm run lint
+          npm run test:unit:ci
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: coverage/lcov-report

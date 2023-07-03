@@ -1,9 +1,10 @@
 import { createWriteStream, unlink, unlinkSync } from 'fs';
 import { get } from 'https';
-import { join } from 'path';
+import { extname, join } from 'path';
 import axios from 'axios';
 
 import config from '../config/config';
+import { createUnzip } from 'zlib';
 
 /**
  * Remote open data sources are configured into the .env file at the root of the project
@@ -11,7 +12,8 @@ import config from '../config/config';
  */
 const dataSets = {
     sirene: config.opendataRemoteSources.sirene,
-    departementsfr: config.opendataRemoteSources.departementsfr
+    departementsfr: config.opendataRemoteSources.departementsfr,
+    ban: config.opendataRemoteSources.ban
 };
 
 // Get the arguments
@@ -47,7 +49,8 @@ const downloadDataSet = async (dataSetType = '', dest = join(process.cwd(), '/as
         }
     }
 
-    const filePath = join(dest, `${dataSetName}.csv`);
+    const originalExt = extname(dataSets[dataSetType]);
+    const filePath = join(dest, `${dataSetType}.csv`);
 
     // Delete existing file based on the filename contained in the URL
     try {
@@ -69,7 +72,11 @@ const downloadDataSet = async (dataSetType = '', dest = join(process.cwd(), '/as
                 process.stdout.write('Downloading ' + (100.0 * downloaded / len).toFixed(2) + '%\r');
             });
 
-            response.pipe(file);
+            if (originalExt === '.gz') {
+                response.pipe(createUnzip()).pipe(file);
+            } else {
+                response.pipe(file);
+            }
         } else {
             file.close();
             unlink(filePath, () => { }); // Delete temp file

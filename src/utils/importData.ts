@@ -19,6 +19,10 @@ const dataSets = {
     departementsfr: {
         path: 'assets/departementsfr.csv',
         delimiter: ','
+    },
+    ban: {
+        path: 'assets/ban.csv',
+        delimiter: ';'
     }
 };
 

@@ -22,6 +22,7 @@ export default {
     },
     opendataRemoteSources: {
         sirene: process.env.SIRENE,
-        departementsfr: process.env.DEPARTEMENTS_FR
+        departementsfr: process.env.DEPARTEMENTS_FR,
+        ban: process.env.BAN
     }
 };

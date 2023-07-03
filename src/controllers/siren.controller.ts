@@ -20,7 +20,7 @@ class SirenController {
                 result = await db.one('SELECT * FROM sirene WHERE siret = $1', [siret]);
             }
         } catch (error) {
-            res.status(404).send(error);
+            res.sendStatus(404);
             return;
         }
 
@@ -32,7 +32,7 @@ class SirenController {
         try {
             result = await db.one('SELECT reltuples AS estimate FROM pg_class where relname = $1', ['sirene']);
         } catch (error) {
-            res.status(404).send(error);
+            res.sendStatus(404);
             return;
         }
 

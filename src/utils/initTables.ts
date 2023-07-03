@@ -1,10 +1,11 @@
-import { initDepartementsFranceTable, initSireneTable } from '../tables';
+import { initBaseAdresseNationale, initDepartementsFranceTable, initSireneTable } from '../tables';
 
 const initTables = async () => {
 
     try {
         await initSireneTable();
         await initDepartementsFranceTable();
+        await initBaseAdresseNationale();
     } catch (error) {
         //
     }
