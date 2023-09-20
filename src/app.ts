@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
+import morgan from 'morgan';
 
 import routes from './routes';
 import config from './config/config';
@@ -27,6 +28,9 @@ const init = () => {
         maxAge: 3600
     }));
     app.use(helmet());
+
+    // Set logger
+    app.use(morgan('dev'));
 
     // Set all routes from routes folder
     app.use('/', routes);
