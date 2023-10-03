@@ -1,8 +1,7 @@
 import path from 'path';
 import { from as copyFrom } from 'pg-copy-streams';
-import { createReadStream, statSync } from 'fs';
+import { createReadStream } from 'fs';
 import { pipeline } from 'stream/promises';
-import progress_stream from 'progress-stream';
 import { Presets, SingleBar } from 'cli-progress';
 
 import { Pg } from '../helpers';
@@ -47,20 +46,7 @@ const importDatabase = async (dataSetType: string) => {
     const pool = Pg.getPool();
     const client = await pool.connect();
     try {
-        // Init logging functions
-        const stat = statSync(relativePath);
-        const str = progress_stream({
-            length: stat.size,
-            time: 100 /* ms */
-        });
-
-        // Init the progress bar to 100% max
-        progressBar.start(100, 0);
-
-        str.on('progress', (progress) => {
-            // Update progress bar
-            progressBar.update(progress.percentage);
-        });
+        console.log(`Importing ${dataSetType} data to Postgres...`);
 
         // Duplicate existing table schema to a temp one
         const tmpTable = `tmp_${dataSetType}`;
@@ -76,7 +62,7 @@ const importDatabase = async (dataSetType: string) => {
         `));
 
         const sourceStream = createReadStream(relativePath);
-        await pipeline(sourceStream, str, ingestStream);
+        await pipeline(sourceStream, ingestStream);
 
         // Once COPY is finished, delete the old table
         await client.query(`DROP TABLE ${dataSetType}`);

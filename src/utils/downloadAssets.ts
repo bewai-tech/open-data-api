@@ -32,6 +32,8 @@ const downloadDataSet = async (dataSetType = '', dest = join(process.cwd(), '/as
         throw Error(`No dataset with key "${dataSetType}" exists. Please check available datasets in the docs.`);
     }
 
+    console.log(`Downloading ${dataSetType} data from remote source...`);
+
     // Get last updated data set (id) from ODS Sirene API
     if (dataSetType === 'sirene') {
         try {
@@ -55,7 +57,7 @@ const downloadDataSet = async (dataSetType = '', dest = join(process.cwd(), '/as
     // Delete existing file based on the filename contained in the URL
     try {
         unlinkSync(filePath);
-        console.log('Existing file deleted.');
+        console.log('Existing file deleted...');
     } catch (error) {
         //
     }
@@ -64,19 +66,13 @@ const downloadDataSet = async (dataSetType = '', dest = join(process.cwd(), '/as
 
     const request = get(dataSets[dataSetType], response => {
         if (response.statusCode === 200) {
-            const len = parseInt(response.headers['content-length'], 10);
-            let downloaded = 0;
-
-            response.on('data', chunk => {
-                downloaded += chunk.length;
-                process.stdout.write('Downloading ' + (100.0 * downloaded / len).toFixed(2) + '%\r');
-            });
 
             if (originalExt === '.gz') {
                 response.pipe(createUnzip()).pipe(file);
             } else {
                 response.pipe(file);
             }
+
         } else {
             file.close();
             unlink(filePath, () => { }); // Delete temp file
