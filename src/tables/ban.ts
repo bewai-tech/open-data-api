@@ -29,19 +29,12 @@ export const initBaseAdresseNationale = () => {
         "cad_parcelles" CHARACTER VARYING
     );`;
 
-    const createIndexes = `
-    CREATE INDEX IF NOT EXISTS idx_ban_id ON ban(id);
-    CREATE INDEX IF NOT EXISTS idx_ban_id_fantoir ON ban(id_fantoir);
-    CREATE INDEX IF NOT EXISTS idx_ban_code_insee ON ban(code_insee);
-    `;
-
     return Pg.execute(createTable).then(async (res) => {
         if (res) {
             console.log('ban table initialized ✓');
         } else {
             console.log('ban table already exist (nothing done)');
         }
-        await Pg.execute(createIndexes);
 
         return res;
     });

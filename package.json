@@ -9,6 +9,7 @@
     "engineStrict": true,
     "scripts": {
         "initTables": "ts-node-dev src/utils/initTables.ts",
+        "indexTable": "ts-node-dev src/utils/indexTable.ts",
         "importData": "ts-node-dev src/utils/importData.ts --",
         "downloadAssets": "ts-node-dev src/utils/downloadAssets.ts -- ",
         "install:ci": "npm ci --loglevel=error --cache .npm --prefer-offline --no-audit",

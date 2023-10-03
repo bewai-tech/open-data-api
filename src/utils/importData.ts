@@ -67,7 +67,7 @@ const importDatabase = async (dataSetType: string) => {
 
         // Drop tmp table if exists
         await client.query(`DROP TABLE IF EXISTS ${tmpTable}`);
-        await client.query(`CREATE TABLE ${tmpTable} (LIKE ${dataSetType} INCLUDING ALL)`);
+        await client.query(`CREATE TABLE ${tmpTable} (LIKE ${dataSetType})`);
 
         // Copy data in this temp table
         const ingestStream = client.query(copyFrom(`

@@ -68,6 +68,11 @@ importData() {
     docker-compose -f docker-compose"$env".yml exec opendata-api bash -c "npm run importData $datasetName"
 }
 
+indexTable() {
+    datasetName="$1"
+    docker-compose -f docker-compose"$env".yml exec opendata-api bash -c "npm run indexTable $datasetName"
+}
+
 downloadAssets() {
     datasetName="$1"
     docker-compose -f docker-compose"$env".yml exec opendata-api bash -c "npm run downloadAssets $datasetName"
@@ -106,6 +111,7 @@ Commands:
   install                     Run app installation scripts
   initTables                  Run Postgres tables installation scripts
   importData                  Run dataset import into a Postgres table
+  indexTable                  Creates the index on given table
   downloadAssets              Download the given data set from configured source
   serve                       Serve NodeJS server for local dev
   tests                       Run unit and quality tests
@@ -142,6 +148,9 @@ initTables)
         ;;
 importData)
         importData $2
+        ;;
+indexTable)
+        indexTable $2
         ;;
 downloadAssets)
         downloadAssets $2

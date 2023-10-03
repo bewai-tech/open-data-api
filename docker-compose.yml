@@ -19,7 +19,7 @@ services:
       - api-shared
 
   postgres:
-    container_name: postgres
+    container_name: postgres-opendata
     image: postgres:15
     ports:
       - ${DB_PORT}:5432
@@ -34,7 +34,7 @@ services:
       - api-shared
 
   pgadmin:
-    container_name: pgadmin
+    container_name: pgadmin-opendata
     image: dpage/pgadmin4:6.14
     restart: unless-stopped
     environment:
@@ -51,7 +51,7 @@ services:
       - api-shared
 
   pghero:
-    container_name: pghero
+    container_name: pghero-opendata
     image: ankane/pghero
     environment:
       DATABASE_URL: "postgres://${DB_USER}:${DB_PASSWORD}@postgres:${DB_PORT}/${DB_NAME}"

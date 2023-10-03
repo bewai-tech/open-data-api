@@ -113,18 +113,12 @@ export const initSireneTable = () => {
         "geolocetablissement" CHARACTER VARYING
     );`;
 
-    const createIndexes = `
-    CREATE INDEX IF NOT EXISTS idx_sirene_siren ON sirene(siren);
-    CREATE INDEX IF NOT EXISTS idx_sirene_siret ON sirene(siret);
-    `;
-
     return Pg.execute(createTable).then(async (res) => {
         if (res) {
             console.log('sirene table initialized ✓');
         } else {
             console.log('sirene table already exist (nothing done)');
         }
-        await Pg.execute(createIndexes);
 
         return res;
     });

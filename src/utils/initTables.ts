@@ -1,14 +1,9 @@
 import { initBaseAdresseNationale, initDepartementsFranceTable, initSireneTable } from '../tables';
 
-const initTables = async () => {
-
-    try {
-        await initSireneTable();
-        await initDepartementsFranceTable();
-        await initBaseAdresseNationale();
-    } catch (error) {
-        //
-    }
+export const initTables = async () => {
+    await initSireneTable();
+    await initDepartementsFranceTable();
+    await initBaseAdresseNationale();
 
     process.exit(0);
 };
