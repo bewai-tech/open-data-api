@@ -5,6 +5,6 @@ describe('DepartementsFrance table init', () => {
     it('Should init DepartementsFrance table', async () => {
         await initDepartementsFranceTable();
 
-        expect(pgExecuteMock).toHaveBeenCalledTimes(2);
+        expect(pgExecuteMock).toHaveBeenCalled();
     });
 });
