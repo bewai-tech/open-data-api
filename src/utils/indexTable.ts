@@ -1,6 +1,5 @@
 import { Pg } from '../helpers';
 
-
 // Get the arguments
 const dataSetName = process.argv[2]; // dataset name
 
@@ -10,13 +9,15 @@ const indexCommands = {
     CREATE INDEX IF NOT EXISTS idx_sirene_siret ON sirene(siret);
     `,
     ban: `
+    DROP INDEX IF EXISTS idx_ban_nom_voie, idx_ban_nom_commune;
+    CREATE EXTENSION IF NOT EXISTS pg_trgm;
     CREATE INDEX IF NOT EXISTS idx_ban_id ON ban(id);
     CREATE INDEX IF NOT EXISTS idx_ban_id_fantoir ON ban(id_fantoir);
     CREATE INDEX IF NOT EXISTS idx_ban_code_insee ON ban(code_insee);
     CREATE INDEX IF NOT EXISTS idx_ban_numero ON ban(numero);
-    CREATE INDEX IF NOT EXISTS idx_ban_nom_voie ON ban(nom_voie);
     CREATE INDEX IF NOT EXISTS idx_ban_code_postal ON ban(code_postal);
-    CREATE INDEX IF NOT EXISTS idx_ban_nom_commune ON ban(nom_commune);
+    CREATE INDEX IF NOT EXISTS trgm_idx_ban_nom_voie ON ban USING gin (nom_voie gin_trgm_ops);
+    CREATE INDEX IF NOT EXISTS trgm_idx_ban_nom_commune ON ban USING gin (nom_commune gin_trgm_ops);
     `,
     departementsfr: `
     CREATE INDEX IF NOT EXISTS idx_departementsfr_code_departement ON departementsfr(code_departement);
