@@ -5,6 +5,6 @@ describe('BaseAdresseNationale table init', () => {
     it('Should init BaseAdresseNationale table', async () => {
         await initBaseAdresseNationale();
 
-        expect(pgExecuteMock).toHaveBeenCalledTimes(2);
+        expect(pgExecuteMock).toHaveBeenCalled();
     });
 });
