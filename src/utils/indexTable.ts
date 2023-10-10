@@ -13,6 +13,10 @@ const indexCommands = {
     CREATE INDEX IF NOT EXISTS idx_ban_id ON ban(id);
     CREATE INDEX IF NOT EXISTS idx_ban_id_fantoir ON ban(id_fantoir);
     CREATE INDEX IF NOT EXISTS idx_ban_code_insee ON ban(code_insee);
+    CREATE INDEX IF NOT EXISTS idx_ban_numero ON ban(numero);
+    CREATE INDEX IF NOT EXISTS idx_ban_nom_voie ON ban(nom_voie);
+    CREATE INDEX IF NOT EXISTS idx_ban_code_postal ON ban(code_postal);
+    CREATE INDEX IF NOT EXISTS idx_ban_nom_commune ON ban(nom_commune);
     `,
     departementsfr: `
     CREATE INDEX IF NOT EXISTS idx_departementsfr_code_departement ON departementsfr(code_departement);
