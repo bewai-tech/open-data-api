@@ -59,8 +59,24 @@ describe('SirenController', () => {
         expect(res.sendStatus).toHaveBeenCalledWith(404);
     });
 
-    it('Should count', async () => {
+    it('Should count (with count)', async () => {
         const req = mockRequest();
+        const res = mockResponse();
+
+        await SirenController.count(req, res);
+
+        expect(dbMock.one).toHaveBeenCalledWith('SELECT count(*) FROM sirene');
+        expect(res.status).toHaveBeenCalledWith(200);
+        // expect(res.status.send).toHaveBeenCalledWith({});
+        expect(res.send).toHaveBeenCalled();
+    });
+
+    it('Should count (with estimate)', async () => {
+        const req = mockRequest({
+            query: {
+                method: 'estimate'
+            }
+        });
         const res = mockResponse();
 
         await SirenController.count(req, res);
