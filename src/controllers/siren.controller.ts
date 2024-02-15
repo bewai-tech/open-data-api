@@ -30,9 +30,21 @@ class SirenController {
     };
 
     static count = async (req: Request, res: Response) => {
-        let result;
+        const { method } = req.query;
+        let result: any;
+
         try {
-            result = await db.one('SELECT reltuples AS estimate FROM pg_class where relname = $1', ['sirene']);
+
+            switch (method) {
+                case 'estimate':
+                    result = await db.one('SELECT reltuples AS estimate FROM pg_class where relname = $1', ['sirene']);
+                    break;
+
+                default:
+                    result = await db.one('SELECT count(*) FROM sirene');
+                    break;
+            }
+
         } catch (error) {
             res.sendStatus(404);
             return;
