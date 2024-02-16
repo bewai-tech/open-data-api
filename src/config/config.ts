@@ -21,7 +21,8 @@ export default {
         port: +process.env.DB_PORT
     },
     opendataRemoteSources: {
-        sirene: process.env.SIRENE,
+        sirene_unitelegale: process.env.SIRENE_UNITE_LEGALE,
+        sirene_etablissement: process.env.SIRENE_ETABLISSEMENT,
         departementsfr: process.env.DEPARTEMENTS_FR,
         ban: process.env.BAN
     }
