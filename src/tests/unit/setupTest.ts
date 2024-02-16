@@ -38,6 +38,7 @@ export const dbMock = {
     one: jest.fn().mockResolvedValue({}),
     oneOrNone: jest.fn().mockResolvedValue({}),
     many: jest.fn().mockResolvedValue([]),
+    manyOrNone: jest.fn().mockResolvedValue([])
 };
 
 jest.mock('../../services', () => ({

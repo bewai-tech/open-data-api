@@ -5,8 +5,9 @@ const dataSetName = process.argv[2]; // dataset name
 
 const indexCommands = {
     sirene: `
-    CREATE INDEX IF NOT EXISTS idx_sirene_siren ON sirene(siren);
-    CREATE INDEX IF NOT EXISTS idx_sirene_siret ON sirene(siret);
+    CREATE INDEX IF NOT EXISTS idx_sirene_unitelegale_siren ON sirene_unitelegale(siren);
+    CREATE INDEX IF NOT EXISTS idx_sirene_etablissement_siren ON sirene_etablissement(siren);
+    CREATE INDEX IF NOT EXISTS idx_sirene_etablissement_siret ON sirene_etablissement(siret);
     `,
     ban: `
     DROP INDEX IF EXISTS idx_ban_nom_voie, idx_ban_nom_commune;
