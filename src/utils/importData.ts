@@ -10,10 +10,15 @@ import { Pg } from '../helpers';
 const dataSetName = process.argv[2]; // dataset name
 
 // List of available datasets
+// All properties must match table names used in `src/tables`
 const dataSets = {
-    sirene: {
-        path: 'assets/sirene.csv',
-        delimiter: ';'
+    sirene_unitelegale: {
+        path: 'assets/StockUniteLegale_utf8.csv',
+        delimiter: ','
+    },
+    sirene_etablissement: {
+        path: 'assets/StockEtablissement_utf8.csv',
+        delimiter: ','
     },
     departementsfr: {
         path: 'assets/departementsfr.csv',

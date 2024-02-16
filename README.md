@@ -22,7 +22,9 @@ These scripts can be found in the `src/utils` directory.
 |--|--|
 | `initTables` | Create all tables, their columns and indexes if not existing |
 | `downloadAssets {entity}` | Download fresh data file for the given entity from configured remote source |
-| `importData` | (Interactive) Imports the data for the given entity from a data file in the `assets` folder. Usually from `.csv` files. A custom CSV separator can be specified in the script file `dataSets` configuration object.
+| `importData` | (Interactive) Imports the data for the given entity from a data file in the `assets` folder. Usually from `.csv` files. A custom CSV separator can be specified in the script file `dataSets` configuration object. |
+
+> `unzip` **needs to be installed directly on the machine**. Because of some NodeJS limitations with Buffer size, extracting large `.zip` files with a NodeJS library can't be done properly.
 
 ## Run the stack
 
