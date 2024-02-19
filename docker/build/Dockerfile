@@ -1,6 +1,6 @@
 FROM node:lts-alpine
 
-RUN apk update && apk add bash
+RUN apk update && apk add bash unzip && rm -vrf /var/cache/apk/*
 
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
